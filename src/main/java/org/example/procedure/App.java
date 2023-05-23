@@ -18,7 +18,7 @@ public class App {
 
         DataFrame df = session.createDataFrame(
             new Row[]{
-                Row.create("Welcome to ", "Snowflake!"),
+                Row.create("Welcome to ", "Snowflake! :)"),
                 Row.create("Learn more: ", "https://www.snowflake.com/snowpark/")
             },
             StructType.create(
