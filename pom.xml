@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.snowflake</groupId>
+  <artifactId>snowpark-java-template</artifactId>
+  <version>0.0.1</version>
+
+  <name>Java 11 Project Template for Snowflake</name>
+
+  <url>https://docs.snowflake.com/en/developer-guide/snowpark/java/index.html</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.snowflake</groupId>
+      <artifactId>snowpark</artifactId>
+      <version>1.8.0</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.snowflake</groupId>
+        <artifactId>snowflake-maven-plugin</artifactId>
+        <version>0.1.0</version>
+        <configuration>
+          <auth>
+              <url>https://${env.SNOWSQL_ACCOUNT}.snowflakecomputing.com:443</url>
+              <user>${env.SNOWSQL_USER}</user>
+              <password>${env.SNOWSQL_PWD}</password>
+              <db>${env.SNOWSQL_DATABASE}</db>
+              <schema>${env.SNOWSQL_SCHEMA}</schema>
+          </auth>
+          <stage>public</stage>
+          <functions>
+              <function>
+                  <name>combineStrings</name>
+                  <handler>org.example.udf.Function.combineStrings</handler>
+                  <args>
+                      <arg>
+                          <name>a</name>
+                          <type>string</type>
+                      </arg>
+                      <arg>
+                          <name>b</name>
+                          <type>string</type>
+                      </arg>
+                  </args>
+                  <returns>string</returns>
+              </function>
+          </functions>
+          <procedures>
+              <procedure>
+                  <name>hello_world_proc</name>
+                  <handler>org.example.procedure.App.run</handler>
+                  <args></args>
+                  <returns>TABLE(hello_world string)</returns>
+              </procedure>
+          </procedures>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

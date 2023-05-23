@@ -1,0 +1,43 @@
+name: Deploy Snowpark Apps
+
+on:
+  push:
+    branches:
+      - main
+  release:
+    types: [published]
+  workflow_dispatch:
+
+env:
+  SNOWSQL_ACCOUNT: ${{ secrets.SNOWSQL_ACCOUNT }}
+  SNOWSQL_USER: ${{ secrets.SNOWSQL_USER }}
+  SNOWSQL_PWD: ${{ secrets.SNOWSQL_PWD }}
+  SNOWSQL_DATABASE: ${{ secrets.SNOWSQL_DATABASE }}
+  SNOWSQL_SCHEMA: ${{ secrets.SNOWSQL_SCHEMA }}
+  SNOWSQL_WAREHOUSE: ${{ secrets.SNOWSQL_WAREHOUSE }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build and test project
+        run: mvn package --no-transfer-progress
+
+      - name: Deploy
+        run: mvn snowflake:deploy --no-transfer-progress
+
+      - name: Upload artifact for future reference
+        uses: actions/upload-artifact@v2
+        with:
+          name: java-app-${{ github.ref_name}}
+          path: target/*.jar
+
