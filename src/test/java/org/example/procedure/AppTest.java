@@ -26,7 +26,7 @@ public class AppTest {
     {
         DataFrame expected = session.createDataFrame(
             new Row[]{
-                Row.create("Welcome to Snowflake!"),
+                Row.create("Welcome to Snowflake! :)"),
                 Row.create("Learn more: https://www.snowflake.com/snowpark/")
             },
             StructType.create(
